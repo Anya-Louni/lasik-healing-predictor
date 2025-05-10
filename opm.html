@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LASIK Healing Predictor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="background-animation">
+        <canvas id="constellation"></canvas>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-eye"></i>
+                <h1>LASIK Healing Predictor</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <!-- Welcome Page -->
+            <section id="welcome-page" class="page active">
+                <div class="content-card">
+                    <h2>Considering LASIK Surgery?</h2>
+                    <p>Discover your personalized healing prediction based on clinical data and advanced modeling.</p>
+                    <p>Our prediction tool uses multiple factors to estimate your healing quality after LASIK surgery, helping you make an informed decision about your vision correction journey.</p>
+                    
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Personalized Analysis</h3>
+                            <p>Get predictions tailored to your unique profile and medical history.</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-database"></i>
+                            <h3>Data-Driven Results</h3>
+                            <p>Our model is trained on comprehensive clinical outcomes data.</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-user-md"></i>
+                            <h3>Medical Insights</h3>
+                            <p>Understand factors influencing your potential recovery.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cta-container">
+                        <button id="start-btn" class="btn-primary">Start Prediction</button>
+                        <p class="disclaimer"><center>This tool provides estimates only and does not replace professional medical advice.</center></p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Prediction Form Pages -->
+            <section id="prediction-form" class="page">
+                <div class="content-card">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" id="form-progress"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <div class="step active" data-step="1">1</div>
+                            <div class="step" data-step="2">2</div>
+                            <div class="step" data-step="3">3</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Page 1: Basic Information -->
+                    <div class="form-page active" id="form-page-1">
+                        <h2>Basic Information</h2>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" min="18" max="80" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pre_op_vision">Pre-Operation Vision (Diopters)</label>
+                            <input type="number" id="pre_op_vision" name="pre_op_vision" step="0.25" min="-15" max="0" required>
+                            <span class="hint">Example: -3.5</span>
+                        </div>
+                        <div class="form-navigation">
+                            <button class="btn-secondary" id="back-to-welcome">Back</button>
+                            <button class="btn-primary" id="next-to-page-2">Next</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Page 2: Clinical Measurements -->
+                    <div class="form-page" id="form-page-2">
+                        <h2>Clinical Measurements</h2>
+                        <div class="form-group">
+                            <label for="corneal_thickness">Corneal Thickness (μm)</label>
+                            <input type="number" id="corneal_thickness" name="corneal_thickness" min="400" max="700" required>
+                            <span class="hint">Normal range: 500-600μm</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="pupil_size">Pupil Size (mm)</label>
+                            <input type="number" id="pupil_size" name="pupil_size" step="0.1" min="2" max="9" required>
+                            <span class="hint">Measured in low-light conditions</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="dry_eye_score">Dry Eye Score (0-10)</label>
+                            <input type="range" id="dry_eye_score" name="dry_eye_score" min="0" max="10" step="1" value="0">
+                            <div class="range-labels">
+                                <span>0 - None</span>
+                                <span>5 - Moderate</span>
+                                <span>10 - Severe</span>
+                            </div>
+                            <output for="dry_eye_score" id="dry_eye_value">0</output>
+                        </div>
+                        <div class="form-navigation">
+                            <button class="btn-secondary" id="back-to-page-1">Back</button>
+                            <button class="btn-primary" id="next-to-page-3">Next</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Page 3: Treatment Information -->
+                    <div class="form-page" id="form-page-3">
+                        <h2>Treatment Information</h2>
+                        <div class="form-group">
+                            <label for="contact_lens_history">Contact Lens History (years)</label>
+                            <input type="number" id="contact_lens_history" name="contact_lens_history" min="0" max="40" required>
+                            <span class="hint">0 if never worn contacts</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="surgery_type">Surgery Type</label>
+                            <select id="surgery_type" name="surgery_type" required>
+                                <option value="">Select</option>
+                                <option value="LASIK">LASIK</option>
+                                <option value="PRK">PRK</option>
+                                <option value="SMILE">SMILE</option>
+                                <option value="LASEK">LASEK</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="post_op_med_compliance">Expected Post-Op Medication Compliance (0-10)</label>
+                            <input type="range" id="post_op_med_compliance" name="post_op_med_compliance" min="0" max="10" step="1" value="8">
+                            <div class="range-labels">
+                                <span>0 - Poor</span>
+                                <span>5 - Average</span>
+                                <span>10 - Excellent</span>
+                            </div>
+                            <output for="post_op_med_compliance" id="med_compliance_value">8</output>
+                        </div>
+                        <div class="form-navigation">
+                            <button class="btn-secondary" id="back-to-page-2">Back</button>
+                            <button class="btn-primary" id="calculate-btn">Calculate Prediction</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Results Page -->
+            <section id="results-page" class="page">
+                <div class="content-card results-card">
+                    <h2>Your LASIK Healing Prediction</h2>
+                    
+                    <div class="results-summary">
+                        <div class="result-gauge">
+                            <svg width="200" height="200" viewBox="0 0 200 200" class="gauge">
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="#e0e6f0" stroke-width="20" />
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="#3498db" stroke-width="20" stroke-dasharray="502.4" stroke-dashoffset="502.4" class="gauge-fill" />
+                                <text x="100" y="120" text-anchor="middle" class="gauge-text">0%</text>
+                            </svg>
+                            <h3>Healing Quality</h3>
+                        </div>
+                        
+                        <div class="results-breakdown">
+                            <h3>Prediction Details</h3>
+                            <div class="result-factors">
+                                <div class="factor">
+                                    <span class="factor-name">Recovery Time</span>
+                                    <div class="factor-bar-container">
+                                        <div class="factor-bar" id="recovery-time-bar"></div>
+                                    </div>
+                                </div>
+                                <div class="factor">
+                                    <span class="factor-name">Vision Stability</span>
+                                    <div class="factor-bar-container">
+                                        <div class="factor-bar" id="stability-bar"></div>
+                                    </div>
+                                </div>
+                                <div class="factor">
+                                    <span class="factor-name">Complication Risk</span>
+                                    <div class="factor-bar-container">
+                                        <div class="factor-bar" id="complication-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendations">
+                        <h3>Personalized Recommendations</h3>
+                        <div id="recommendations-content">
+                            <!-- Recommendations will be generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button class="btn-secondary" id="back-to-form">Edit Inputs</button>
+                        <button class="btn-primary" id="download-report">Download Report</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© 2025 LASIK Healing Predictor. This tool provides estimates only and does not replace professional medical advice.</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
